@@ -2,17 +2,35 @@
 
 A professional, full-stack AI chat application built with React, Spring Boot, and Neo4j. This application features secure authentication, real-time AI chat using **Groq (Llama 3)**, and persistent conversation history stored in a graph database.
 
-## 📸 Application Preview
+## Application Preview
+
+The screenshots below show key parts of the application. Click any image to open the full-size version.
 
 <p align="center">
-  <img src="preview/chat-empty-state.png" alt="Chat Empty State" width="48%"/>
-  <img src="preview/chat-desktop-sidebar.png" alt="Chat Desktop with Sidebar" width="48%"/>
-</p>
+  <figure style="display:inline-block; margin: 10px; text-align:center;">
+    <a href="preview/chat-empty-state.png"><img src="preview/chat-empty-state.png" alt="Chat Empty State" width="320" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
+    <figcaption>Chat interface — empty state</figcaption>
+  </figure>
 
-<p align="center">
-  <img src="preview/chat-mobile-view.png" alt="Chat Mobile View" width="30%"/>
-  <img src="preview/chat-mobile-sidebar.png" alt="Chat Mobile Sidebar" width="30%"/>
-  <img src="preview/login-page.png" alt="Login Page" width="38%"/>
+  <figure style="display:inline-block; margin: 10px; text-align:center;">
+    <a href="preview/chat-desktop-sidebar.png"><img src="preview/chat-desktop-sidebar.png" alt="Chat Desktop with Sidebar" width="320" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
+    <figcaption>Chat interface — desktop with sidebar</figcaption>
+  </figure>
+
+  <figure style="display:inline-block; margin: 10px; text-align:center;">
+    <a href="preview/chat-mobile-view.png"><img src="preview/chat-mobile-view.png" alt="Chat Mobile View" width="220" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
+    <figcaption>Mobile responsive view</figcaption>
+  </figure>
+
+  <figure style="display:inline-block; margin: 10px; text-align:center;">
+    <a href="preview/chat-mobile-sidebar.png"><img src="preview/chat-mobile-sidebar.png" alt="Chat Mobile Sidebar" width="220" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
+    <figcaption>Mobile sidebar</figcaption>
+  </figure>
+
+  <figure style="display:inline-block; margin: 10px; text-align:center;">
+    <a href="preview/login-page.png"><img src="preview/login-page.png" alt="Login Page" width="320" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
+    <figcaption>Login page</figcaption>
+  </figure>
 </p>
 
 ---
@@ -60,16 +78,38 @@ A professional, full-stack AI chat application built with React, Spring Boot, an
 
 ### 1. Database Setup (Neo4j)
 
-The project includes a `docker-compose.yml` file for quick Neo4j setup.
+This project provides a docker-compose file for convenience, but you can also run the official Neo4j image directly with Docker.
+
+Option A — Docker Compose (recommended)
+
+1. Open a terminal in the `backend` directory.
+2. Start the Neo4j service with the included compose file:
 
 ```bash
 cd backend
 docker-compose up -d
 ```
 
-- **Neo4j Browser**: `http://localhost:7474`
-- **Username**: `neo4j`
-- **Password**: `password123`
+- Neo4j Browser: http://localhost:7474
+- Bolt: bolt://localhost:7687
+- Default credentials (from compose): neo4j / password123
+
+Option B — Run official Neo4j Docker image directly
+
+If you prefer to run the official image without Docker Compose, use:
+
+```bash
+# example using Neo4j 5.x image
+docker run -d \
+  --name neo4j \
+  -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/password123 \
+  neo4j:5.9
+```
+
+Notes:
+- Use a secure password in production and do not commit credentials to source control.
+- If you need persistent storage, mount a volume for `/data` and `/logs`.
 
 ### 2. Backend Setup
 
@@ -208,8 +248,8 @@ VITE_API_BASE_URL=http://localhost:8080/api
 
 ## Contact
 
-**Chouaib Saad**
+Chouaib Saad
 
-- 📧 Email: [choiyebsaad2000@gmail.com](mailto:choiyebsaad2000@gmail.com)
-- 🌐 Portfolio: [chouaib-saad.vercel.app](https://chouaib-saad.vercel.app/)
-- 💻 GitHub: [github.com/chouaib-saad](https://github.com/chouaib-saad)
+Email: choiyebsaad2000@gmail.com
+Portfolio: https://chouaib-saad.vercel.app/
+GitHub: https://github.com/chouaib-saad
