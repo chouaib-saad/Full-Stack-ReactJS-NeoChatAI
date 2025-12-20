@@ -2,37 +2,6 @@
 
 A professional, full-stack AI chat application built with React, Spring Boot, and Neo4j. This application features secure authentication, real-time AI chat using **Groq (Llama 3)**, and persistent conversation history stored in a graph database.
 
-## Application Preview
-
-The screenshots below show key parts of the application. Click any image to open the full-size version.
-
-<p align="center">
-  <figure style="display:inline-block; margin: 10px; text-align:center;">
-    <a href="preview/chat-empty-state.png"><img src="preview/chat-empty-state.png" alt="Chat Empty State" width="320" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
-    <figcaption>Chat interface — empty state</figcaption>
-  </figure>
-
-  <figure style="display:inline-block; margin: 10px; text-align:center;">
-    <a href="preview/chat-desktop-sidebar.png"><img src="preview/chat-desktop-sidebar.png" alt="Chat Desktop with Sidebar" width="320" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
-    <figcaption>Chat interface — desktop with sidebar</figcaption>
-  </figure>
-
-  <figure style="display:inline-block; margin: 10px; text-align:center;">
-    <a href="preview/chat-mobile-view.png"><img src="preview/chat-mobile-view.png" alt="Chat Mobile View" width="220" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
-    <figcaption>Mobile responsive view</figcaption>
-  </figure>
-
-  <figure style="display:inline-block; margin: 10px; text-align:center;">
-    <a href="preview/chat-mobile-sidebar.png"><img src="preview/chat-mobile-sidebar.png" alt="Chat Mobile Sidebar" width="220" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
-    <figcaption>Mobile sidebar</figcaption>
-  </figure>
-
-  <figure style="display:inline-block; margin: 10px; text-align:center;">
-    <a href="preview/login-page.png"><img src="preview/login-page.png" alt="Login Page" width="320" style="border:1px solid #e5e7eb; border-radius:6px;"/></a>
-    <figcaption>Login page</figcaption>
-  </figure>
-</p>
-
 ---
 
 ## Features
@@ -170,6 +139,47 @@ VITE_API_BASE_URL=http://localhost:8080/api
 
 ---
 
+## Secrets — Rotate Groq API key & secure configuration
+
+If an API key or other secret has been exposed, rotate it immediately and use environment variables or a secrets manager instead of committing secrets to source control. Follow these steps:
+
+1. Invalidate the exposed key in the Groq dashboard (or the provider's console).
+2. Generate a new API key in the Groq dashboard.
+3. Remove any remaining occurrences of the old key from your repository history (this project has been cleaned locally with git-filter-repo).
+4. Store and provide the new key to the application using environment variables or a secret manager.
+
+Recommended local approaches (no secrets in source files):
+
+- Windows PowerShell (temporary for current session):
+
+  $env:GROQ_API_KEY = "<NEW_GROQ_API_KEY>"
+  ./mvnw spring-boot:run
+
+- Linux / macOS (temporary for current shell):
+
+  export GROQ_API_KEY="<NEW_GROQ_API_KEY>"
+  ./mvnw spring-boot:run
+
+- Run with a JVM system property (example):
+
+  mvn -Dgroq.api.key="$GROQ_API_KEY" spring-boot:run
+
+- Permanent / production: use your hosting provider's secrets store (GitHub Actions Secrets, Docker secrets, Kubernetes Secrets, AWS Secrets Manager, etc.).
+
+How the application reads the value
+
+- The backend uses the property `groq.api.key`. You can keep this property in `application.properties` but set it to resolve from an environment variable, for example:
+
+  groq.api.key=${GROQ_API_KEY:}
+
+  (This change is a configuration change only; do not commit real keys.)
+
+Notes:
+- After rotating the key, invalidate the old key immediately in Groq so it cannot be used.
+- Do not commit any real secret values into the repository. Use the placeholder `YOUR_GROQ_API_KEY` in committed files if necessary.
+
+---
+
 ## API Endpoints
 
 | Method | Endpoint | Description |
@@ -217,6 +227,20 @@ VITE_API_BASE_URL=http://localhost:8080/api
 
 ---
 
+## Submission checklist / Must include
+
+Make sure the repository contains the following before final submission (these sections are present in this README):
+
+- How to run the backend (see "Backend Setup" section)
+- How to run the frontend (see "Frontend Setup" section)
+- Required environment variables (see "Environment Variables" section)
+- Neo4j setup instructions (see "Database Setup (Neo4j)" section)
+- Testing instructions for the endpoints (see "Testing Instructions" section)
+
+Please confirm these sections are visible in the README and that you have rotated the exposed Groq API key in the Groq dashboard.
+
+---
+
 ## Project Structure
 
 ```
@@ -248,8 +272,8 @@ VITE_API_BASE_URL=http://localhost:8080/api
 
 ## Contact
 
-Chouaib Saad
+**Chouaib Saad**
 
-Email: choiyebsaad2000@gmail.com
-Portfolio: https://chouaib-saad.vercel.app/
-GitHub: https://github.com/chouaib-saad
+- Email: [choiyebsaad2000@gmail.com](mailto:choiyebsaad2000@gmail.com)
+- Portfolio: [chouaib-saad.vercel.app](https://chouaib-saad.vercel.app/)
+- GitHub: [github.com/chouaib-saad](https://github.com/chouaib-saad)
