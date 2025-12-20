@@ -137,48 +137,6 @@ groq.model=llama-3.3-70b-versatile
 VITE_API_BASE_URL=http://localhost:8080/api
 ```
 
----
-
-## Secrets — Rotate Groq API key & secure configuration
-
-If an API key or other secret has been exposed, rotate it immediately and use environment variables or a secrets manager instead of committing secrets to source control. Follow these steps:
-
-1. Invalidate the exposed key in the Groq dashboard (or the provider's console).
-2. Generate a new API key in the Groq dashboard.
-3. Remove any remaining occurrences of the old key from your repository history (this project has been cleaned locally with git-filter-repo).
-4. Store and provide the new key to the application using environment variables or a secret manager.
-
-Recommended local approaches (no secrets in source files):
-
-- Windows PowerShell (temporary for current session):
-
-  $env:GROQ_API_KEY = "<NEW_GROQ_API_KEY>"
-  ./mvnw spring-boot:run
-
-- Linux / macOS (temporary for current shell):
-
-  export GROQ_API_KEY="<NEW_GROQ_API_KEY>"
-  ./mvnw spring-boot:run
-
-- Run with a JVM system property (example):
-
-  mvn -Dgroq.api.key="$GROQ_API_KEY" spring-boot:run
-
-- Permanent / production: use your hosting provider's secrets store (GitHub Actions Secrets, Docker secrets, Kubernetes Secrets, AWS Secrets Manager, etc.).
-
-How the application reads the value
-
-- The backend uses the property `groq.api.key`. You can keep this property in `application.properties` but set it to resolve from an environment variable, for example:
-
-  groq.api.key=${GROQ_API_KEY:}
-
-  (This change is a configuration change only; do not commit real keys.)
-
-Notes:
-- After rotating the key, invalidate the old key immediately in Groq so it cannot be used.
-- Do not commit any real secret values into the repository. Use the placeholder `YOUR_GROQ_API_KEY` in committed files if necessary.
-
----
 
 ## API Endpoints
 
