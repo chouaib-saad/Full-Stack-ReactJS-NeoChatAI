@@ -2,21 +2,39 @@
 
 A professional, full-stack AI chat application built with React, Spring Boot, and Neo4j. This application features secure authentication, real-time AI chat using **Groq (Llama 3)**, and persistent conversation history stored in a graph database.
 
+## 📸 Application Preview
+
+<p align="center">
+  <img src="preview/chat-empty-state.png" alt="Chat Empty State" width="48%"/>
+  <img src="preview/chat-desktop-sidebar.png" alt="Chat Desktop with Sidebar" width="48%"/>
+</p>
+
+<p align="center">
+  <img src="preview/chat-mobile-view.png" alt="Chat Mobile View" width="30%"/>
+  <img src="preview/chat-mobile-sidebar.png" alt="Chat Mobile Sidebar" width="30%"/>
+  <img src="preview/login-page.png" alt="Login Page" width="38%"/>
+</p>
+
+---
+
 ## Features
 
 - **User Authentication**: Secure Registration and Login with JWT (Access & Refresh Tokens).
 - **Real AI Chat**: Integrated with **Groq API** (Llama 3 model) for intelligent, high-speed responses.
 - **Conversation History**: Persistent chat history stored in **Neo4j** graph database.
-- **Modern UI**: Professional, responsive interface built with **React 19**, **Next.js 15**, and **Tailwind CSS 4**.
-- **Robust Security**: HttpOnly cookies (optional) or secure local storage for tokens, with automatic token refresh on expiration.
+- **Clear History**: Delete all conversation history from both frontend and database *(fully deletes Message nodes from Neo4j)*.
+- **Modern UI**: Professional, responsive interface built with **React 18**, **Vite**, and **Tailwind CSS**.
+- **Robust Security**: Secure local storage for tokens, with automatic token refresh on expiration.
+- **Fully Responsive**: Optimized for desktop, tablet, and mobile devices.
 
 ---
 
 ## Tech Stack
 
-### Frontend
-- **Framework**: React 19 (Next.js 15 App Router)
-- **Styling**: Tailwind CSS 4, Lucide React Icons
+### Frontend (React + Vite)
+- **Framework**: React 18 + Vite
+- **Styling**: Tailwind CSS 3, Lucide React Icons
+- **Routing**: React Router v6
 - **State Management**: React Context API
 - **HTTP Client**: Custom Fetch wrapper with Interceptors
 
@@ -42,7 +60,7 @@ A professional, full-stack AI chat application built with React, Spring Boot, an
 
 ### 1. Database Setup (Neo4j)
 
-The project uses Docker Compose to run Neo4j.
+The project includes a `docker-compose.yml` file for quick Neo4j setup.
 
 ```bash
 cd backend
@@ -60,16 +78,13 @@ docker-compose up -d
 3.  Run the application:
 
 ```bash
-# Windows
-./mvnw spring-boot:run
-
-# Linux/Mac
+# Using Maven Wrapper (recommended)
 ./mvnw spring-boot:run
 ```
 
 The backend server will start on `http://localhost:8080`.
 
-### 3. Frontend Setup
+### 3. Frontend Setup (React + Vite)
 
 1.  Open a new terminal in the `frontend` directory.
 2.  Install dependencies and start the dev server:
@@ -80,7 +95,7 @@ npm install
 npm run dev
 ```
 
-The frontend application will be available at `http://localhost:3000`.
+The frontend application will be available at `http://localhost:5173`.
 
 ---
 
@@ -107,24 +122,37 @@ groq.api.url=https://api.groq.com/openai/v1/chat/completions
 groq.model=llama-3.3-70b-versatile
 ```
 
-### Frontend (`.env.local`)
+### Frontend (`.env` or `.env.local`)
 
 ```properties
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
+VITE_API_BASE_URL=http://localhost:8080/api
 ```
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Login and get tokens |
+| POST | `/api/auth/refresh` | Refresh access token |
+| POST | `/api/chat` | Send message to AI |
+| GET | `/api/chat/history` | Get conversation history |
+| DELETE | `/api/chat/history` | Clear all conversation history |
 
 ---
 
 ## Testing Instructions
 
 ### 1. User Registration
-1.  Navigate to `http://localhost:3000/register`.
+1.  Navigate to `http://localhost:5173/register`.
 2.  Enter a unique email (e.g., `test@demo.com`) and password.
 3.  Click **Create account**.
-4.  **Verification**: You should be redirected to login. If the email exists, you will see "Email is already in use!".
+4.  **Verification**: You should be redirected to login.
 
 ### 2. User Login
-1.  Navigate to `http://localhost:3000/login`.
+1.  Navigate to `http://localhost:5173/login`.
 2.  Enter your credentials.
 3.  Click **Sign in**.
 4.  **Verification**: You will be redirected to the Chat Interface.
@@ -132,21 +160,20 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
 ### 3. AI Chat (Real Llama 3)
 1.  Type a prompt: *"Write a short poem about coding."*
 2.  Click **Send**.
-3.  **Verification**: You will receive a creative, intelligent response from the AI (not a mock response).
+3.  **Verification**: You will receive a creative, intelligent response from the AI.
 4.  Refresh the page. The conversation history should load from the database.
 
-### 4. Token Refresh (Critical Flow)
-This tests the seamless session management.
+### 4. Clear History
+1.  Open the sidebar by clicking the menu icon.
+2.  Click **Clear history** at the bottom.
+3.  **Verification**: All messages are removed and deleted from the Neo4j database.
+4.  Refresh the page to confirm the history is permanently cleared.
+
+### 5. Token Refresh (Critical Flow)
 1.  Open Browser DevTools (**F12**) -> **Application** -> **Local Storage**.
-2.  Locate the `accessToken`.
-3.  **Action**: Delete the last few characters of the token value to invalidate it.
-4.  Send a new message or refresh the page.
-5.  **Verification**: 
-    - The request will initially fail (401).
-    - The app will automatically call `/refresh`.
-    - A new `accessToken` will be stored.
-    - The original request will retry and succeed.
-    - **Result**: You stay logged in and the chat continues uninterrupted.
+2.  Locate the `accessToken` and delete the last few characters to invalidate it.
+3.  Send a new message.
+4.  **Verification**: The app automatically refreshes the token and retries the request.
 
 ---
 
@@ -157,11 +184,32 @@ This tests the seamless session management.
 ├── backend/                # Spring Boot Application
 │   ├── src/main/java       # Java Source (com.backend.*)
 │   ├── docker-compose.yml  # Neo4j Docker config
-│   └── pom.xml            # Maven build file
+│   ├── mvnw / mvnw.cmd     # Maven Wrapper (portable Maven)
+│   └── pom.xml             # Maven build file
 │
-└── frontend/               # Next.js Application
-    ├── app/               # Pages (Login, Register, Chat)
-    ├── components/        # UI Components (ChatInterface, etc.)
-    ├── lib/               # API Client & Services
-    └── public/            # Static assets
+├── frontend/               # React + Vite Application
+│   ├── src/
+│   │   ├── components/     # UI Components (ChatInterface, etc.)
+│   │   ├── contexts/       # React Context (AuthContext)
+│   │   ├── hooks/          # Custom Hooks (useToast)
+│   │   ├── lib/            # API Client & Services
+│   │   ├── pages/          # Pages (Login, Register, Chat)
+│   │   ├── App.tsx         # Main App with Router
+│   │   └── main.tsx        # Entry Point
+│   ├── public/             # Static assets
+│   ├── index.html          # HTML Template
+│   └── vite.config.ts      # Vite Configuration
+│
+├── preview/                # Application Screenshots
+└── README.md               # This file
 ```
+
+---
+
+## Contact
+
+**Chouaib Saad**
+
+- 📧 Email: [choiyebsaad2000@gmail.com](mailto:choiyebsaad2000@gmail.com)
+- 🌐 Portfolio: [chouaib-saad.vercel.app](https://chouaib-saad.vercel.app/)
+- 💻 GitHub: [github.com/chouaib-saad](https://github.com/chouaib-saad)

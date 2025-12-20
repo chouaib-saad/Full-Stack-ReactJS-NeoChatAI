@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -71,6 +72,25 @@ public class ChatService {
                 .collect(Collectors.toList());
 
         return new HistoryResponse(history);
+    }
+
+    @Transactional
+    public void clearHistory(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // FIX: Create a copy of the messages list BEFORE clearing
+        // The original code had a bug: it stored a reference to user.getMessages(),
+        // then cleared the same list, making the stored variable empty before deletion
+        List<Message> messagesToDelete = new ArrayList<>(user.getMessages());
+
+        // Clear the relationship from user
+        user.getMessages().clear();
+        userRepository.save(user);
+
+        // Delete each message node from Neo4j
+        for (Message message : messagesToDelete) {
+            messageRepository.delete(message);
+        }
     }
 
     private String callGroqApi(String prompt) {
