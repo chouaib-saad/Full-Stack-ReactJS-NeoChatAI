@@ -183,21 +183,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 3.  Send a new message.
 4.  **Verification**: The app automatically refreshes the token and retries the request.
 
----
 
-## Submission checklist / Must include
-
-Make sure the repository contains the following before final submission (these sections are present in this README):
-
-- How to run the backend (see "Backend Setup" section)
-- How to run the frontend (see "Frontend Setup" section)
-- Required environment variables (see "Environment Variables" section)
-- Neo4j setup instructions (see "Database Setup (Neo4j)" section)
-- Testing instructions for the endpoints (see "Testing Instructions" section)
-
-Please confirm these sections are visible in the README and that you have rotated the exposed Groq API key in the Groq dashboard.
-
----
 
 ## Project Structure
 
