@@ -183,7 +183,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 3.  Send a new message.
 4.  **Verification**: The app automatically refreshes the token and retries the request.
 
-
+---
 
 ## Project Structure
 
