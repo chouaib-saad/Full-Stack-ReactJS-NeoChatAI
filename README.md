@@ -1,4 +1,4 @@
-# NeoChat AI - Full Stack Intern Assignment
+# NeoChat AI - Full Stack
 
 A professional, full-stack AI chat application built with React, Spring Boot, and Neo4j. This application features secure authentication, real-time AI chat using **Groq (Llama 3)**, and persistent conversation history stored in a graph database.
 
